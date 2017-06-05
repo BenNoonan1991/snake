@@ -11,5 +11,11 @@ describe('Canvas', function() {
   //   expect(document.getElementById("myCanvas").innerHTML).toEqual('myCanvas');
   // });
 
-  
+  it('has a default  height of 350',function() {
+    expect(canvas._height).toEqual(350);
+  });
+
+  it('has a default  width of 350',function() {
+    expect(canvas._width).toEqual(350);
+  });
 });

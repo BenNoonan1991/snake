@@ -1,6 +1,6 @@
 function Canvas() {
-
-
+    this._width = 350;
+    this._height = 350;
 }
 
 
