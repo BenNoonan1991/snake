@@ -12,4 +12,5 @@ describe('Snake', function() {
   it('has a default score of 0', function() {
     expect(snake.defaultScore()).toEqual(0);
   });
+
 });
