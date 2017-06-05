@@ -13,4 +13,7 @@ describe('Snake', function() {
     expect(snake.defaultScore()).toEqual(0);
   });
 
+  it('defaults to an empty array', function() {
+    expect(snake.size).toEqual([]);
+  })
 });

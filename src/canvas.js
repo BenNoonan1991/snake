@@ -1,10 +1,7 @@
 function Canvas() {
-    this._width = 350;
-    this._height = 350;
+  this._width = 400;
+  this._height = 400;
 }
 
-
-Canvas.prototype.displayCanvas = function() {
-  var mycanvas = document.getElementById('myCanvas');
-  var ctx = mycanvas.getContext('2d');
-};
+var mycanvas = document.getElementById('myCanvas');
+var ctx = mycanvas.getContext('2d');

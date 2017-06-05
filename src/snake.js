@@ -1,6 +1,7 @@
 function Snake() {
   this._snakeDefault = 10;
   this._score = 0;
+  this.size = []
 }
 
 
