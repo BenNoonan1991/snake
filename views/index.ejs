@@ -6,6 +6,15 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <div id= 'home'>
+      <canvas id="myCanvas" width="500" height="600" style="border:5px solid #000000;">
+      </canvas>
+      <div id= "drawSnake"></div>
+      <button onclick="drawSnake">Start</button>
+    </div>
+    <div class= 'game'>
+    <p>Press start to play!</p>
+    </div>
+    <script src="src/game.js"></script>
   </body>
 </html>
