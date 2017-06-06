@@ -5,6 +5,13 @@ var canvas = document.getElementById("myCanvas"),
 		//Full width and height
 	w = window.innerWidth,
 	h = window.innerHeight;
+
+var grd = ctx.createLinearGradient(0,0,200,0);
+grd.addColorStop(0,"red");
+grd.addColorStop(1,"white");
+ctx.fillStyle = grd;
+ctx.fillRect(10,10,50,50);
+
 // 	// canvas.height = h;
 // 	var drawSnake = function(snakeToDraw) {
 //    var drawableSnake = { color: "green", pixels: snakeToDraw };
@@ -18,7 +25,5 @@ var canvas = document.getElementById("myCanvas"),
 var grd = ctx.createLinearGradient(0,0,200,0);
 grd.addColorStop(0,"red");
 grd.addColorStop(1,"white");
-
-// Fill with gradient
 ctx.fillStyle = grd;
 ctx.fillRect(10,10,50,50);
