@@ -1,17 +1,15 @@
 #home {
       width: 400px;
       height: 400px;
-      background-image: url('../img/charmer.png');
       background-size: auto 400px;
       background-repeat: no-repeat;
-      background-color: lightgreen;
       background-position: center center;
       padding: 0;
       margin: 03;
 
     }
 
-    button {
+      button {
       background-color: green;
       color: white;
       border: none;
@@ -40,4 +38,4 @@
 
     .game {
       margin: 0 auto;
-    }
+    }*/
