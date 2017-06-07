@@ -20,7 +20,7 @@
 		tick();
 	};
 
-	Game.prototype= {
+	Game.prototype = {
 		update: function() {
 			for (var i = 0; i < this.bodies.length; i++) {
 				if(this.bodies[i].update !== undefined) {
@@ -64,7 +64,6 @@
 				return isColliding(block, { center: center, size: { x: BLOCK_SIZE, y: BLOCK_SIZE }});
 			}).length === 0;
 		}
-
 	};
 
 	var SnakeBody = function(game, center) {
@@ -166,8 +165,9 @@
 		}
 	};
 
-	var Food = function(game, GameSize) {
+	var Food = function(game) {
 		this.game = game;
+    this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 
 		while(this.center === undefined) {
 			var center = this.game.randomSquare();
@@ -175,8 +175,6 @@
 				this.center = center;
 			}
 		}
-
-		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 	};
 
 	Food.prototype = {
