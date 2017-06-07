@@ -6,13 +6,13 @@
 		var screen = canvas.getContext('2d');
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
 
-		this.bodies = [new Snake(this, size)];
+		this.bodies = [new Snake(this, this.size)];
     this.addFood();
 
 		var self = this;
 		var tick = function() {
 			self.update();
-			self.draw(screen, gameSize);
+			self.draw(screen);
 			requestAnimationFrame(tick);
 		};
 		tick();
@@ -20,14 +20,16 @@
 	Game.prototype= {
 		update: function() {
 			for (var i = 0; i < this.bodies.length; i++) {
-				this.bodies[i].update();
+				if(this.bodies[i].update !== undefined) {
+					this.bodies[i].update();
+				}
 			}
 		},
 
-		draw: function(screen, gameSize) {
-			screen.clearRect(0, 0, gameSize.x, gameSize.y);
+		draw: function(screen) {
+			screen.clearRect(0, 0, this.size.x, this.size.y);
 			for (var i = 0; i < this.bodies.length; i++) {
-				drawRect(screen, this.bodies[i]);
+				this.bodies[i].draw(screen);
 			}
 		},
 
@@ -41,16 +43,22 @@
 
     randomSquare: function() {
       return {
-        //x: Math.floor(this.gameSize.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
+        x: Math.floor(this.size.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
         y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
       };
     },
+
+		isSquareFree: function(center) {
+			return this.bodies.filter(function(block) {
+				return isColliding(block, { center: center, size: { x: BLOCK_SIZE, y: BLOCK_SIZE }})
+			}).length === 0;
+		}
 	};
 
-	var Snake = function(game, gameSize) {
+	var Snake = function(game) {
 		this.game = game;
+		this.center = { x:this.game.center, y:this.game.center };
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
-		this.center = { x:gameSize.x / 2, y:gameSize.y / 2 };
 		this.keyboarder = new Keyboarder();
 	};
 
@@ -95,6 +103,10 @@
 		screen.fillRect(body.center.x - body.size.x / 2,
 										body.center.y - body.size.y / 2,
 										body.size.x, body.size.y);
+	};
+
+	var isColliding = function() {
+
 	};
 
 	var Keyboarder = function() {
