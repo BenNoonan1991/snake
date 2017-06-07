@@ -99,15 +99,15 @@
 		handleKeyboard: function() {
 			if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT) && this.direction.x !== 1) {
 				this.direction.x = -1;
-				this.direction.y= 0;
+				this.direction.y = 0;
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT) && this.direction.x !== -1) {
-				this.direction.y = 1;
-				this.direction.x = 0;
+				this.direction.x = 1;
+				this.direction.y = 0;
 			}
 
 			if (this.keyboarder.isDown(this.keyboarder.KEYS.UP) && this.direction.y !== 1) {
-				this.direction.x = -1;
-				this.direction.y= 0;
+				this.direction.y = -1;
+				this.direction.x = 0;
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN) && this.direction.y !== -1) {
 				this.direction.y = 1;
 				this.direction.x = 0;
