@@ -111,20 +111,23 @@
 	Food.prototype = {
 		draw: function(screen) {
 			drawRect(screen, this, "red");
-		}
-	};
+		},
 
-	var drawRect = function(screen, body) {
-		screen.fillRect(body.center.x - body.size.x / 2,
-										body.center.y - body.size.y / 2,
-										body.size.x, body.size.y);
-	};
 
-	var isColliding = function(anotherObject) {
+	// var drawRect = function(screen, body) {
+	// 	screen.fillRect(body.center.x - body.size.x / 2,
+	// 									body.center.y - body.size.y / 2,
+	// 									body.size.x, body.size.y);
+	// };
+
+	 collision: function(anotherObject) {
 			if (anotherObject instanceof HeadBlock) {
 					this.game.removeBody(this);
 			}
+		}
 	};
+
+
 
 	var Keyboarder = function() {
 		var keyState = {};
