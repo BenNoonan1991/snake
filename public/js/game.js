@@ -9,9 +9,9 @@
 		var screen = canvas.getContext('2d');
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
     this.center = { x: this.size.x / 2, y: this.size.y / 2 };
-		// this.bodies = createWalls(this).concat(new HeadBlock(this));
+		this.bodies = createWalls(this).concat(new Snake(this, this.size));
 
-		this.bodies = [new Snake(this, this.size)];
+		// this.bodies = [new Snake(this, this.size)];
     this.addFood();
 
 		var self = this;
@@ -101,7 +101,7 @@
 
 	Food.prototype = {
 		draw: function(screen) {
-			drawRect(screen, this, "green");
+			drawRect(screen, this, "red");
 		}
 	};
 
@@ -205,6 +205,13 @@
                              { x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // left
     return walls;
   };
+
+	var drawRect = function(screen, body, color) {
+    screen.fillStyle = color;
+    screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
+                    body.size.x, body.size.y);
+  };
+
 
 	window.onload = function() {
 		new Game("screen");
