@@ -27,6 +27,7 @@
 					this.bodies[i].update();
 				}
 			}
+			reportCollisions(this.bodies);
 		},
 
 		draw: function(screen) {
@@ -50,6 +51,14 @@
         y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
       };
     },
+
+		removeBody: function(body) {
+      var bodyIndex = this.bodies.indexOf(body);
+      if (bodyIndex !== -1) {
+        this.bodies.splice(bodyIndex, 1);
+      }
+    },
+
 
 		isSquareFree: function(center) {
 			return this.bodies.filter(function(block) {
@@ -98,6 +107,26 @@
     draw: function(screen) {
       drawRect(screen, this, "green");
     },
+    
+    collision: function(anotherObject) {
+      if (anotherObject instanceof WallBlock || anotherObject instanceof BodyBlock) {
+        this.die();
+      } else if (anotherObject instanceof FoodBlock) {
+        this.eat();
+      }
+		},
+
+		eat: function() {
+      this.addBlock = true;
+      this.game.addFood();
+    },
+
+		die: function() {
+      this.game.removeBody(this);
+      for (var i = 0; i < this.blocks.length; i++) {
+        this.game.removeBody(this.blocks[i]);
+      }
+    },
 
 		move: function() {
 			var prevBlockCenter = { x: this.center.x, y: this.center.y};
@@ -145,18 +174,23 @@
 	Food.prototype = {
 		draw: function(screen) {
 			drawRect(screen, this, "red");
+		},
+
+
+	// var drawRect = function(screen, body) {
+	// 	screen.fillRect(body.center.x - body.size.x / 2,
+	// 									body.center.y - body.size.y / 2,
+	// 									body.size.x, body.size.y);
+	// };
+
+	 collision: function(anotherObject) {
+			if (anotherObject instanceof HeadBlock) {
+					this.game.removeBody(this);
+			}
 		}
 	};
 
-	var drawRect = function(screen, body) {
-		screen.fillRect(body.center.x - body.size.x / 2,
-										body.center.y - body.size.y / 2,
-										body.size.x, body.size.y);
-	};
 
-	var isColliding = function() {
-
-	};
 
 	var Keyboarder = function() {
 		var keyState = {};
@@ -175,6 +209,37 @@
 
 		this.KEYS = { LEFT: 37, RIGHT: 39, UP: 38, DOWN: 40 };
 	};
+
+	var isColliding = function(b1, b2) {
+    return !(
+      b1 === b2 ||
+        b1.center.x + b1.size.x / 2 <= b2.center.x - b2.size.x / 2 ||
+        b1.center.y + b1.size.y / 2 <= b2.center.y - b2.size.y / 2 ||
+        b1.center.x - b1.size.x / 2 >= b2.center.x + b2.size.x / 2 ||
+        b1.center.y - b1.size.y / 2 >= b2.center.y + b2.size.y / 2
+    );
+  };
+
+	var reportCollisions = function(bodies) {
+    var collisions = [];
+    for (var i = 0; i < bodies.length; i++) {
+      for (var j = i + 1; j < bodies.length; j++) {
+        if (isColliding(bodies[i], bodies[j])) {
+          collisions.push([bodies[i], bodies[j]]);
+        }
+      }
+    }
+
+    for (var i = 0; i < collisions.length; i++) {
+      if (collisions[i][0].collision !== undefined) {
+        collisions[i][0].collision(collisions[i][1]);
+      }
+
+      if (collisions[i][1].collision !== undefined) {
+        collisions[i][1].collision(collisions[i][0]);
+      }
+    }
+  };
 
 	var WallBlock = function(game, center, size) {
     this.game = game;
