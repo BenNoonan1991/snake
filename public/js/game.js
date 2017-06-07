@@ -5,6 +5,7 @@
 		var canvas = document.getElementById(canvasId);
 		var screen = canvas.getContext('2d');
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
+    this.center = { x: this.size.x / 2, y: this.size.y / 2 };
 
 		this.bodies = [new Snake(this, this.size)];
     this.addFood();
@@ -57,7 +58,7 @@
 
 	var Snake = function(game) {
 		this.game = game;
-		this.center = { x:this.game.center, y:this.game.center };
+		this.center = { x: this.game.center.x, y: this.game.center.y };
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 		this.keyboarder = new Keyboarder();
 	};
