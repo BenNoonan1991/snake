@@ -1,22 +1,3 @@
-// var canvas = document.getElementById("myCanvas"),
-// 	ctx = canvas.getContext("2d"),
-// 		//Full width and height
-// 	w = window.innerWidth,
-// 	h = window.innerHeight;
-// 	// canvas.height = h;
-// 	// canvas.width = w;
-//
-//
-// ctx.font = "30px Arial";
-// ctx.strokeText("Hello World",10,50);
-//
-// 	var drawSnake = function(snakeToDraw) {
-//     var drawableSnake = { color: "green", pixels: snakeToDraw };
-//     var drawableObjects = [drawableSnake];
-//     CHUNK.draw(drawableObjects);
-//   }
-//   var snake = [{ top: 0, left: 0}];
-//   drawSnake(snake)
 ;(function() {
 	var Game = function(canvasId) {
 		var canvas = document.getElementById(canvasId);
@@ -41,6 +22,7 @@
 		},
 
 		draw: function(screen, gameSize){
+			screen.clearRect(0, 0, gameSize.x, gameSize.y);
 			for (var i = 0; i < this.bodies.length; i++) {
 				drawRect(screen, this.bodies[i]);
 			}
@@ -60,6 +42,10 @@
 				this.center.x -= 2;
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
 				this.center.x += 2;
+			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.UP)) {
+				this.center.y -= 2;
+			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN)) {
+				this.center.y += 2;
 			}
 
 		},
@@ -86,7 +72,7 @@
 			return keyState[keyCode] === true;
 		};
 
-		this.KEYS = { LEFT: 37, RIGHT: 39};
+		this.KEYS = { LEFT: 37, RIGHT: 39, UP: 38, DOWN: 40 };
 	};
 
 	window.onload = function() {
