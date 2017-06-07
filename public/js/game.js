@@ -8,7 +8,7 @@
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
     this.center = { x: this.size.x / 2, y: this.size.y / 2 };
 
-		this.bodies = createWalls(this).concat(new Snake(this, this.size));
+		this.bodies = createWalls(this).concat(new Snake(this));
     this.addFood();
 
 		var self = this;
@@ -20,7 +20,7 @@
 		tick();
 	};
 
-	Game.prototype= {
+	Game.prototype = {
 		update: function() {
 			for (var i = 0; i < this.bodies.length; i++) {
 				if(this.bodies[i].update !== undefined) {
@@ -41,6 +41,13 @@
 			this.bodies.push(body);
 		},
 
+		removeBody: function(body) {
+      var bodyIndex = this.bodies.indexOf(body);
+      if (bodyIndex !== -1) {
+        this.bodies.splice(bodyIndex, 1);
+      }
+    },
+
 		addFood: function() {
 			this.addBody(new Food(this));
 		},
@@ -52,20 +59,11 @@
       };
     },
 
-		removeBody: function(body) {
-      var bodyIndex = this.bodies.indexOf(body);
-      if (bodyIndex !== -1) {
-        this.bodies.splice(bodyIndex, 1);
-      }
-    },
-
-
 		isSquareFree: function(center) {
 			return this.bodies.filter(function(block) {
 				return isColliding(block, { center: center, size: { x: BLOCK_SIZE, y: BLOCK_SIZE }});
 			}).length === 0;
 		}
-
 	};
 
 	var SnakeBody = function(game, center) {
@@ -86,11 +84,12 @@
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 		this.direction = { x: 1, y: 0};
 		this.blocks = [];
+		console.log(this.blocks);
 
 		this.keyboarder = new Keyboarder();
 		this.lastMove = 0;
 
-		this.addBlock = false;
+		this.addBody = false;
 	};
 
 	Snake.prototype = {
@@ -107,17 +106,17 @@
     draw: function(screen) {
       drawRect(screen, this, "green");
     },
-    
+
     collision: function(anotherObject) {
-      if (anotherObject instanceof WallBlock || anotherObject instanceof BodyBlock) {
+      if (anotherObject instanceof WallBlock || anotherObject instanceof SnakeBody) {
         this.die();
-      } else if (anotherObject instanceof FoodBlock) {
+      } else if (anotherObject instanceof Food) {
         this.eat();
       }
 		},
 
 		eat: function() {
-      this.addBlock = true;
+      this.addBody = true;
       this.game.addFood();
     },
 
@@ -133,10 +132,18 @@
 			this.center.x += this.direction.x * BLOCK_SIZE;
 			this.center.y += this.direction.y * BLOCK_SIZE;
 
-			// for (var i = 0; i < this.blocks.length; i++);
-			// var oldCenter = this.blocks[i].center;
-			// this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
-			// prevBlockCenter = oldCenter;
+			if (this.addBody === true) {
+				var block = new SnakeBody(this.game, prevBlockCenter);
+				this.game.addBody(block);
+				this.blocks.push(block);
+				this.addBody = false;
+			}
+
+			for (var i = 0; i < this.blocks.length; i++) {
+				var oldCenter = this.blocks[i].center;
+				this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
+				prevBlockCenter = oldCenter;
+		  }
 		},
 
 		handleKeyboard: function() {
@@ -158,8 +165,9 @@
 		}
 	};
 
-	var Food = function(game, GameSize) {
+	var Food = function(game) {
 		this.game = game;
+    this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 
 		while(this.center === undefined) {
 			var center = this.game.randomSquare();
@@ -167,8 +175,6 @@
 				this.center = center;
 			}
 		}
-
-		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 	};
 
 	Food.prototype = {
@@ -176,21 +182,12 @@
 			drawRect(screen, this, "red");
 		},
 
-
-	// var drawRect = function(screen, body) {
-	// 	screen.fillRect(body.center.x - body.size.x / 2,
-	// 									body.center.y - body.size.y / 2,
-	// 									body.size.x, body.size.y);
-	// };
-
 	 collision: function(anotherObject) {
-			if (anotherObject instanceof HeadBlock) {
+			if (anotherObject instanceof Snake) {
 					this.game.removeBody(this);
 			}
 		}
 	};
-
-
 
 	var Keyboarder = function() {
 		var keyState = {};
@@ -248,18 +245,6 @@
   };
 
 	WallBlock.prototype = {
-    draw: function(screen) {
-      drawRect(screen, this, "black");
-    }
-  };
-
-	var BodyBlock = function(game, center) {
-    this.game = game;
-    this.center = center;
-    this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
-  };
-
-  BodyBlock.prototype = {
     draw: function(screen) {
       drawRect(screen, this, "black");
     }
