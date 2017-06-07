@@ -1,22 +1,23 @@
 
 ;(function() {
+
 	var BLOCK_SIZE = 10;
+
 
 	var Game = function(canvasId) {
 		var canvas = document.getElementById(canvasId);
 		var screen = canvas.getContext('2d');
-		var gameSize = { x: canvas.width, y: canvas.height };
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
     this.center = { x: this.size.x / 2, y: this.size.y / 2 };
-		this.bodies = createWalls(this).concat(new HeadBlock(this));
+		// this.bodies = createWalls(this).concat(new HeadBlock(this));
 
-		this.bodies = [new Snake(this, gameSize)];
+		this.bodies = [new Snake(this, this.size)];
+    this.addFood();
 
 		var self = this;
 		var tick = function() {
 			self.update();
-			// self.wallsDraw(screen, gameSize);
-			self.draw(screen, gameSize);
+			self.draw(screen);
 			requestAnimationFrame(tick);
 		};
 		tick();
@@ -24,39 +25,46 @@
 	Game.prototype= {
 		update: function() {
 			for (var i = 0; i < this.bodies.length; i++) {
-				this.bodies[i].update();
+				if(this.bodies[i].update !== undefined) {
+					this.bodies[i].update();
+				}
 			}
 		},
 
-		draw: function(screen, gameSize){
-			screen.clearRect(0, 0, gameSize.x, gameSize.y);
+		draw: function(screen) {
+			screen.clearRect(0, 0, this.size.x, this.size.y);
 			for (var i = 0; i < this.bodies.length; i++) {
-				drawRect(screen, this.bodies[i]);
+				this.bodies[i].draw(screen);
 			}
+		},
+
+		addBody: function(body) {
+			this.bodies.push(body);
+		},
+
+		addFood: function() {
+			this.addBody(new Food(this));
+		},
+
+    randomSquare: function() {
+      return {
+        x: Math.floor(this.size.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
+        y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
+      };
+    },
+
+		isSquareFree: function(center) {
+			return this.bodies.filter(function(block) {
+				return isColliding(block, { center: center, size: { x: BLOCK_SIZE, y: BLOCK_SIZE }});
+			}).length === 0;
 		}
 
 	};
-	//
-	// Game.prototype= {
-	//
-	// 	update: function() {
-	// 		for (var i = 0; i < this.bodies.length; i++) {
-	// 			this.bodies[i].update();
-	// 		}
-	// 	},
-	// 	wallsDraw: function(screen, gameSize){
-	// 		screen.clearRect(0, 0, gameSize.x, gameSize.y);
-	// 		for (var i = 0; i < this.walls.length; i++) {
-	// 			drawRect(screen, this.walls[i]);
-	// 		}
-	// 	}
-	//
-	// };
 
-	var Snake = function(game, gameSize) {
+	var Snake = function(game) {
 		this.game = game;
-		this.size = { x:15, y:15 };
-		this.center = { x:gameSize.x / 2, y:gameSize.y / 2 };
+		this.center = { x: this.game.center.x, y: this.game.center.y };
+		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 		this.keyboarder = new Keyboarder();
 	};
 
@@ -71,14 +79,40 @@
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN)) {
 				this.center.y += 2;
 			}
-
 		},
+
+    draw: function(screen) {
+      drawRect(screen, this, "black");
+    }
+	};
+
+	var Food = function(game, GameSize) {
+		this.game = game;
+
+		while(this.center === undefined) {
+			var center = this.game.randomSquare();
+			if (this.game.isSquareFree(center)) {
+				this.center = center;
+			}
+		}
+
+		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
+	};
+
+	Food.prototype = {
+		draw: function(screen) {
+			drawRect(screen, this, "green");
+		}
 	};
 
 	var drawRect = function(screen, body) {
 		screen.fillRect(body.center.x - body.size.x / 2,
 										body.center.y - body.size.y / 2,
 										body.size.x, body.size.y);
+	};
+
+	var isColliding = function() {
+
 	};
 
 	var Keyboarder = function() {
