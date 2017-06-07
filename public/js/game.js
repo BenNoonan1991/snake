@@ -1,17 +1,14 @@
-
 ;(function() {
 
 	var BLOCK_SIZE = 10;
-
 
 	var Game = function(canvasId) {
 		var canvas = document.getElementById(canvasId);
 		var screen = canvas.getContext('2d');
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
     this.center = { x: this.size.x / 2, y: this.size.y / 2 };
-		this.bodies = createWalls(this).concat(new Snake(this, this.size));
 
-		// this.bodies = [new Snake(this, this.size)];
+		this.bodies = createWalls(this).concat(new Snake(this, this.size));
     this.addFood();
 
 		var self = this;
@@ -22,6 +19,7 @@
 		};
 		tick();
 	};
+
 	Game.prototype= {
 		update: function() {
 			for (var i = 0; i < this.bodies.length; i++) {
@@ -65,18 +63,22 @@
 		this.game = game;
 		this.center = { x: this.game.center.x, y: this.game.center.y };
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
-		this.keyboarder = new Keyboarder();
 		this.direction = { x: 1, y: 0};
 		this.blocks = [];
+
+		this.keyboarder = new Keyboarder();
+		this.lastMove = 0;
 	};
 
 	Snake.prototype = {
 		update: function() {
 			this.handleKeyboard();
 
-
-
-
+			var now = new Date().getTime();
+			if (now > this.lastMove + 100) {
+				this.move();
+				this.lastMove = now;
+			}
 		},
 
     draw: function(screen) {
@@ -88,21 +90,27 @@
 			this.center.x += this.direction.x * BLOCK_SIZE;
 			this.center.y += this.direction.y * BLOCK_SIZE;
 
-			for (var i = 0; i < this.blocks.length; i++);
-			var oldCenter = this.blocks[i].center;
-			this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
-			prevBlockCenter = oldCenter;
+			// for (var i = 0; i < this.blocks.length; i++);
+			// var oldCenter = this.blocks[i].center;
+			// this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
+			// prevBlockCenter = oldCenter;
 		},
 
 		handleKeyboard: function() {
-			if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
-				this.center.x -= 2;
-			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
-				this.center.x += 2;
-			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.UP)) {
-				this.center.y -= 2;
-			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN)) {
-				this.center.y += 2;
+			if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT) && this.direction.x !== 1) {
+				this.direction.x = -1;
+				this.direction.y= 0;
+			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT) && this.direction.x !== -1) {
+				this.direction.y = 1;
+				this.direction.x = 0;
+			}
+
+			if (this.keyboarder.isDown(this.keyboarder.KEYS.UP) && this.direction.y !== 1) {
+				this.direction.x = -1;
+				this.direction.y= 0;
+			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN) && this.direction.y !== -1) {
+				this.direction.y = 1;
+				this.direction.x = 0;
 			}
 		}
 	};
@@ -139,13 +147,13 @@
 	var Keyboarder = function() {
 		var keyState = {};
 
-		window.onkeydown = function(e) {
+		window.addEventListener('keydown', function(e) {
 			keyState[e.keyCode] = true;
-		};
+		});
 
-		window.onkeyup = function(e) {
+		window.addEventListener('keyup', function(e) {
 			keyState[e.keyCode] = false;
-		};
+		});
 
 		this.isDown = function(keyCode) {
 			return keyState[keyCode] === true;
@@ -203,7 +211,6 @@
     screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
                     body.size.x, body.size.y);
   };
-
 
 	window.onload = function() {
 		new Game("screen");
