@@ -3,11 +3,12 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    </head>
+    <script src="js/game.js"></script>
+  </head>
   <body>
     <h1><%= title %></h1>
     <div id= 'home'>
-      <canvas id="myCanvas" width="500" height="600" style="border:5px solid #000000;">
+      <canvas id="screen" width="310" height="310">
       </canvas>
       <div id= "drawSnake"></div>
       <button onclick="drawSnake">Start</button>
@@ -15,6 +16,7 @@
     <div class= 'game'>
     <p>Press start to play!</p>
     </div>
+
+    <script src="src/game.js"></script>
   </body>
-  <script src = "js/game.js"></script>
 </html>
