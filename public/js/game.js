@@ -4,9 +4,10 @@
 	var Game = function(canvasId) {
 		var canvas = document.getElementById(canvasId);
 		var screen = canvas.getContext('2d');
-		var gameSize = { x: canvas.width, y: canvas.height };
+		this.size = { x: screen.canvas.width, y: screen.canvas.height };
 
-		this.bodies = [new Snake(this, gameSize), this.addFood()];
+		this.bodies = [new Snake(this, size)];
+    this.addFood();
 
 		var self = this;
 		var tick = function() {
@@ -36,7 +37,14 @@
 
 		addFood: function() {
 			this.addBody(new Food(this));
-		}
+		},
+
+    randomSquare: function() {
+      return {
+        //x: Math.floor(this.gameSize.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
+        y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
+      };
+    },
 	};
 
 	var Snake = function(game, gameSize) {
@@ -57,8 +65,11 @@
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN)) {
 				this.center.y += 2;
 			}
-
 		},
+
+    draw: function(screen) {
+      drawRect(screen, this, "black");
+    }
 	};
 
 	var Food = function(game, GameSize) {
