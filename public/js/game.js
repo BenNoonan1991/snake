@@ -59,6 +59,18 @@
 
 	};
 
+	var SnakeBody = function(game, center) {
+		this.game = game;
+		this.center = center;
+		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
+	};
+
+	SnakeBody.prototype = {
+		draw: function(screen) {
+			drawRect(screen, this, "green");
+		}
+	};
+
 	var Snake = function(game) {
 		this.game = game;
 		this.center = { x: this.game.center.x, y: this.game.center.y };
@@ -68,6 +80,8 @@
 
 		this.keyboarder = new Keyboarder();
 		this.lastMove = 0;
+
+		this.addBlock = false;
 	};
 
 	Snake.prototype = {
@@ -82,7 +96,7 @@
 		},
 
     draw: function(screen) {
-      drawRect(screen, this, "black");
+      drawRect(screen, this, "green");
     },
 
 		move: function() {
