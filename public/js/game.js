@@ -66,10 +66,35 @@
 		this.center = { x: this.game.center.x, y: this.game.center.y };
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 		this.keyboarder = new Keyboarder();
+		this.direction = { x: 1, y: 0};
+		this.blocks = [];
 	};
 
 	Snake.prototype = {
 		update: function() {
+			this.handleKeyboard();
+
+
+
+
+		},
+
+    draw: function(screen) {
+      drawRect(screen, this, "black");
+    },
+
+		move: function() {
+			var prevBlockCenter = { x: this.center.x, y: this.center.y};
+			this.center.x += this.direction.x * BLOCK_SIZE;
+			this.center.y += this.direction.y * BLOCK_SIZE;
+
+			for (var i = 0; i < this.blocks.length; i++);
+			var oldCenter = this.blocks[i].center;
+			this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
+			prevBlockCenter = oldCenter;
+		},
+
+		handleKeyboard: function() {
 			if (this.keyboarder.isDown(this.keyboarder.KEYS.LEFT)) {
 				this.center.x -= 2;
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.RIGHT)) {
@@ -79,11 +104,7 @@
 			} else if (this.keyboarder.isDown(this.keyboarder.KEYS.DOWN)) {
 				this.center.y += 2;
 			}
-		},
-
-    draw: function(screen) {
-      drawRect(screen, this, "black");
-    }
+		}
 	};
 
 	var Food = function(game, GameSize) {
@@ -131,35 +152,6 @@
 		};
 
 		this.KEYS = { LEFT: 37, RIGHT: 39, UP: 38, DOWN: 40 };
-	};
-
-	var HeadBlock = function(game) {
-    this.game = game;
-    this.center = { x: this.game.center.x, y: this.game.center.y };
-    this.direction = { x: 1, y: 0 };
-    this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
-    this.blocks = [];
-
-    this.keyboarder = new Keyboarder();
-    this.lastMove = 0;
-
-    this.addBlock = false;
-  };
-
-	HeadBlock.prototype = {
-    update: function() {
-      this.handleKeyboard();
-
-      var now = new Date().getTime();
-      if (now > this.lastMove + 100) {
-        this.move();
-        this.lastMove = now;
-      }
-    },
-
-    draw: function(screen) {
-      drawRect(screen, this, "black");
-    }
 	};
 
 	var WallBlock = function(game, center, size) {
