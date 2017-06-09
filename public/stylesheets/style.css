@@ -1,54 +1,68 @@
 #home {
-      width: 400px;
-      height: 400px;
-      background-size: auto 400px;
-      background-repeat: no-repeat;
-      background-position: center center;
-      padding: 0;
-      margin: 03;
+    width: 400px;
+    height: 400px;
+    background-size: auto 400px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding: 0;
+    margin: 03;
 
-    }
+}
 
-    canvas {
-      border-radius: 25px;
-      background:url('http://colouringbook.org/www/TATARTIST.NET/A/anaconda_black_white_line_art_tatoo_tattoo-1152px.png');
-      background-repeat: no-repeat;
-      margin: auto;
-      background-position: center;
-      background-size: 90%;   /*width: 50%;*/
-      border: 3px solid green;
-      padding: 10px;
-      box-shadow: 40px 40px 15px #888888;
+h1 {
+    background-color:  grey;
+    opacity: 0.6;
+}
 
-    }
+body {
+    background: url("https://wallpaperscraft.com/image/snake_tongue_scales_venomous_78406_1920x1080.jpg");
+    opacity: 0.8;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
 
-      button {
-      background-color: green;
-      color: white;
-      border: none;
-      bottom: 0;
-      height: 30px;
-      font-size: 12pt;
-      float: left;
-      width: 90px;
-      margin: 10px 0 0 0;
-    }
-    button:hover {
-      background-color: red;
-    }
+canvas {
+    border-radius: 25px;
+    background-color: #4169E1;
+    background-repeat: no-repeat;
+    margin: auto;
+    background-position: center;
+    background-size: 90%;   /*width: 50%;*/
+    border: 3px solid green;
+    padding: 10px;
+    box-shadow: 40px 40px 15px #888888;
 
-    button:disabled {
-      background-color: grey;
-    }
+}
 
-    p {
-      font-family: Helvetica;
-      font-weight: bold;
-      width: 250px;
-      margin: 18px 0 5px 8px;
-      float: left;
-    }
+button {
+    background-color: green;
+    color: white;
+    border: none;
+    bottom: 0;
+    height: 30px;
+    font-size: 12pt;
+    float: left;
+    width: 90px;
+    margin: 10px 0 0 0;
+}
+button:hover {
+    background-color: red;
+}
 
-    .game {
-      margin: 0 auto;
+button:disabled {
+    background-color: grey;
+}
+
+p {
+    font-family: Helvetica;
+    font-weight: bold;
+    width: 250px;
+    margin: 18px 0 5px 8px;
+    float: left;
+}
+
+.game {
+    margin: 0 auto;
     }*/
