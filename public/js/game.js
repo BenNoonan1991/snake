@@ -84,7 +84,6 @@
 		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 		this.direction = { x: 1, y: 0};
 		this.blocks = [];
-		console.log(this.blocks);
 
 		this.keyboarder = new Keyboarder();
 		this.lastMove = 0;
@@ -260,23 +259,23 @@
 				{ x: game.size.x - BLOCK_SIZE / 2, y: game.center.y },
 				{ x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // right
 
-				walls.push(new WallBlock(game,
-					{ x: game.center.x, y: game.size.y - BLOCK_SIZE / 2 },
-					{ x: game.size.x, y: BLOCK_SIZE })); // bottom
+			walls.push(new WallBlock(game,
+				{ x: game.center.x, y: game.size.y - BLOCK_SIZE / 2 },
+				{ x: game.size.x, y: BLOCK_SIZE })); // bottom
 
-					walls.push(new WallBlock(game,
-						{ x: BLOCK_SIZE / 2, y: game.center.y },
-						{ x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // left
-						return walls;
-					};
+			walls.push(new WallBlock(game,
+				{ x: BLOCK_SIZE / 2, y: game.center.y },
+				{ x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // left
+			return walls;
+	};
 
-					var drawRect = function(screen, body, color) {
-						screen.fillStyle = color;
-						screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
-							body.size.x, body.size.y);
-						};
+	var drawRect = function(screen, body, color) {
+		screen.fillStyle = color;
+		screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
+			body.size.x, body.size.y);
+		};
 
-						window.onload = function() {
-							new Game("screen");
-						};
-					})();
+	window.onload = function() {
+		new Game("screen");
+	};
+})();
