@@ -74,7 +74,7 @@
 
 	SnakeBody.prototype = {
 		draw: function(screen) {
-			drawRect(screen, this, "green");
+			drawRect(screen, this, "black");
 		}
 	};
 
@@ -104,7 +104,7 @@
 		},
 
     draw: function(screen) {
-      drawRect(screen, this, "green");
+      drawRect(screen, this, "black");
     },
 
     collision: function(anotherObject) {

@@ -3,7 +3,8 @@
 ### About
 Our group's first exposure to writing a HTML game in Javascript. The classic game Snake.
 
-<!-- ![alt-text]() -->
+![alt-text](./img/screenshot.png)
+
 
 ---
 ## Visit our Heroku site

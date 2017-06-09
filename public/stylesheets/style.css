@@ -9,9 +9,24 @@
 
     }
 
+    h1 {
+     background-color:  grey;
+     opacity: 0.6;
+    }
+
+    body {
+      background: url("https://wallpaperscraft.com/image/snake_tongue_scales_venomous_78406_1920x1080.jpg");
+      opacity: 0.8;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+
     canvas {
       border-radius: 25px;
-      background:url('http://colouringbook.org/www/TATARTIST.NET/A/anaconda_black_white_line_art_tatoo_tattoo-1152px.png');
+      /*background:url('http://colouringbook.org/www/TATARTIST.NET/A/anaconda_black_white_line_art_tatoo_tattoo-1152px.png');*/
+      background-color: #4169E1;
       background-repeat: no-repeat;
       margin: auto;
       background-position: center;
