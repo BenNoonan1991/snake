@@ -6,10 +6,10 @@
 		var canvas = document.getElementById(canvasId);
 		var screen = canvas.getContext('2d');
 		this.size = { x: screen.canvas.width, y: screen.canvas.height };
-    this.center = { x: this.size.x / 2, y: this.size.y / 2 };
+		this.center = { x: this.size.x / 2, y: this.size.y / 2 };
 
 		this.bodies = createWalls(this).concat(new Snake(this));
-    this.addFood();
+		this.addFood();
 
 		var self = this;
 		var tick = function() {
@@ -42,22 +42,22 @@
 		},
 
 		removeBody: function(body) {
-      var bodyIndex = this.bodies.indexOf(body);
-      if (bodyIndex !== -1) {
-        this.bodies.splice(bodyIndex, 1);
-      }
-    },
+			var bodyIndex = this.bodies.indexOf(body);
+			if (bodyIndex !== -1) {
+				this.bodies.splice(bodyIndex, 1);
+			}
+		},
 
 		addFood: function() {
 			this.addBody(new Food(this));
 		},
 
-    randomSquare: function() {
-      return {
-        x: Math.floor(this.size.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
-        y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
-      };
-    },
+		randomSquare: function() {
+			return {
+				x: Math.floor(this.size.x / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2,
+				y: Math.floor(this.size.y / BLOCK_SIZE * Math.random()) * BLOCK_SIZE + BLOCK_SIZE / 2
+			};
+		},
 
 		isSquareFree: function(center) {
 			return this.bodies.filter(function(block) {
@@ -103,29 +103,29 @@
 			}
 		},
 
-    draw: function(screen) {
-      drawRect(screen, this, "black");
-    },
+		draw: function(screen) {
+			drawRect(screen, this, "black");
+		},
 
-    collision: function(anotherObject) {
-      if (anotherObject instanceof WallBlock || anotherObject instanceof SnakeBody) {
-        this.die();
-      } else if (anotherObject instanceof Food) {
-        this.eat();
-      }
+		collision: function(anotherObject) {
+			if (anotherObject instanceof WallBlock || anotherObject instanceof SnakeBody) {
+				this.die();
+			} else if (anotherObject instanceof Food) {
+				this.eat();
+			}
 		},
 
 		eat: function() {
-      this.addBody = true;
-      this.game.addFood();
-    },
+			this.addBody = true;
+			this.game.addFood();
+		},
 
 		die: function() {
-      this.game.removeBody(this);
-      for (var i = 0; i < this.blocks.length; i++) {
-        this.game.removeBody(this.blocks[i]);
-      }
-    },
+			this.game.removeBody(this);
+			for (var i = 0; i < this.blocks.length; i++) {
+				this.game.removeBody(this.blocks[i]);
+			}
+		},
 
 		move: function() {
 			var prevBlockCenter = { x: this.center.x, y: this.center.y};
@@ -143,7 +143,7 @@
 				var oldCenter = this.blocks[i].center;
 				this.blocks[i].center = { x: prevBlockCenter.x, y: prevBlockCenter.y};
 				prevBlockCenter = oldCenter;
-		  }
+			}
 		},
 
 		handleKeyboard: function() {
@@ -167,7 +167,7 @@
 
 	var Food = function(game) {
 		this.game = game;
-    this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
+		this.size = { x: BLOCK_SIZE, y: BLOCK_SIZE };
 
 		while(this.center === undefined) {
 			var center = this.game.randomSquare();
@@ -182,9 +182,9 @@
 			drawRect(screen, this, "red");
 		},
 
-	 collision: function(anotherObject) {
+		collision: function(anotherObject) {
 			if (anotherObject instanceof Snake) {
-					this.game.removeBody(this);
+				this.game.removeBody(this);
 			}
 		}
 	};
@@ -208,77 +208,75 @@
 	};
 
 	var isColliding = function(b1, b2) {
-    return !(
-      b1 === b2 ||
-        b1.center.x + b1.size.x / 2 <= b2.center.x - b2.size.x / 2 ||
-        b1.center.y + b1.size.y / 2 <= b2.center.y - b2.size.y / 2 ||
-        b1.center.x - b1.size.x / 2 >= b2.center.x + b2.size.x / 2 ||
-        b1.center.y - b1.size.y / 2 >= b2.center.y + b2.size.y / 2
-    );
-  };
+		return !(
+			b1 === b2 ||
+			b1.center.x + b1.size.x / 2 <= b2.center.x - b2.size.x / 2 ||
+			b1.center.y + b1.size.y / 2 <= b2.center.y - b2.size.y / 2 ||
+			b1.center.x - b1.size.x / 2 >= b2.center.x + b2.size.x / 2 ||
+			b1.center.y - b1.size.y / 2 >= b2.center.y + b2.size.y / 2
+		);
+	};
 
 	var reportCollisions = function(bodies) {
-    var collisions = [];
-    for (var i = 0; i < bodies.length; i++) {
-      for (var j = i + 1; j < bodies.length; j++) {
-        if (isColliding(bodies[i], bodies[j])) {
-          collisions.push([bodies[i], bodies[j]]);
-        }
-      }
-    }
+		var collisions = [];
+		for (var i = 0; i < bodies.length; i++) {
+			for (var j = i + 1; j < bodies.length; j++) {
+				if (isColliding(bodies[i], bodies[j])) {
+					collisions.push([bodies[i], bodies[j]]);
+				}
+			}
+		}
 
-    for (var i = 0; i < collisions.length; i++) {
-      if (collisions[i][0].collision !== undefined) {
-        collisions[i][0].collision(collisions[i][1]);
-      }
+		for (var i = 0; i < collisions.length; i++) {
+			if (collisions[i][0].collision !== undefined) {
+				collisions[i][0].collision(collisions[i][1]);
+			}
 
-      if (collisions[i][1].collision !== undefined) {
-        collisions[i][1].collision(collisions[i][0]);
-      }
-    }
-  };
+			if (collisions[i][1].collision !== undefined) {
+				collisions[i][1].collision(collisions[i][0]);
+			}
+		}
+	};
 
 	var WallBlock = function(game, center, size) {
-    this.game = game;
-    this.center = center;
-    this.size = size;
-  };
+		this.game = game;
+		this.center = center;
+		this.size = size;
+	};
 
 	WallBlock.prototype = {
-    draw: function(screen) {
-      drawRect(screen, this, "black");
-    }
-  };
+		draw: function(screen) {
+			drawRect(screen, this, "black");
+		}
+	};
 
 	var createWalls = function(game) {
-    var walls = [];
-    walls.push(new WallBlock(game,
-                             { x: game.center.x, y: BLOCK_SIZE / 2 },
-                             { x: game.size.x, y: BLOCK_SIZE })); // top
+		var walls = [];
+		walls.push(new WallBlock(game,
+			{ x: game.center.x, y: BLOCK_SIZE / 2 },
+			{ x: game.size.x, y: BLOCK_SIZE })); // top
 
-    walls.push(new WallBlock(game,
-                             { x: game.size.x - BLOCK_SIZE / 2, y: game.center.y },
-                             { x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // right
+			walls.push(new WallBlock(game,
+				{ x: game.size.x - BLOCK_SIZE / 2, y: game.center.y },
+				{ x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // right
 
-    walls.push(new WallBlock(game,
-                             { x: game.center.x, y: game.size.y - BLOCK_SIZE / 2 },
-                             { x: game.size.x, y: BLOCK_SIZE })); // bottom
+				walls.push(new WallBlock(game,
+					{ x: game.center.x, y: game.size.y - BLOCK_SIZE / 2 },
+					{ x: game.size.x, y: BLOCK_SIZE })); // bottom
 
-    walls.push(new WallBlock(game,
-                             { x: BLOCK_SIZE / 2, y: game.center.y },
-                             { x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // left
-    return walls;
-  };
+					walls.push(new WallBlock(game,
+						{ x: BLOCK_SIZE / 2, y: game.center.y },
+						{ x: BLOCK_SIZE, y: game.size.y - BLOCK_SIZE * 2 })); // left
+						return walls;
+					};
 
-	var drawRect = function(screen, body, color) {
-    screen.fillStyle = color;
-    screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
-                    body.size.x, body.size.y);
-  };
-	// button.onclick = function {
-	// 	new Game('screen')
-	// }
-	window.onload = function() {
-		new Game("screen");
-	};
-})();
+					var drawRect = function(screen, body, color) {
+						screen.fillStyle = color;
+						screen.fillRect(body.center.x - body.size.x / 2, body.center.y - body.size.y / 2,
+							body.size.x, body.size.y);
+						};
+
+						window.onload = function() {
+							new Game("screen");
+						};
+					})();
