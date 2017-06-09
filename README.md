@@ -41,6 +41,7 @@ Use the arrow keys to control the snake(green) and pick up the food(red). Try an
 * Remote collaboration
 
 ---
+
 ## Technologies used
 
 * [Javascript](https://www.javascript.com/) for the game script
@@ -49,3 +50,9 @@ Use the arrow keys to control the snake(green) and pick up the food(red). Try an
 * [Waffle](https://waffle.io/) for tracking and organising workflow
 * CSS to make it look pretty
 * Git for version managing
+
+---
+
+## Acknowledgements
+
+[Mary Rose Cook](https://github.com/maryrosecook)
